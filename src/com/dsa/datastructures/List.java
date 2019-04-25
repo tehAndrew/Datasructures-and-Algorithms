@@ -1,13 +1,13 @@
 package com.dsa.datastructures;
 
 /**
- * An interface representing a sequential collection of elements. A list allows random-access of elements and duplicate
- * elements.
+ * An interface representing a sequential collection of elements. Duplicate elements are allowed. Null is a valid
+ * element to put in a list.
  *
  * @author Andreas Palmqvist
  * @param <E> The type of elements to store in the list.
  */
-public interface List <E> {
+public interface List <E> extends IterableList<E> {
     /**
      * Inserts an element at <tt>index</tt>.
      *
@@ -31,7 +31,7 @@ public interface List <E> {
      * Returns the element at <tt>index</tt>.
      *
      * @param index The index of the element to return.
-     * @return the element at <tt>index</tt>.
+     * @return The element at <tt>index</tt>.
      * @throws com.dsa.datastructures.exceptions.EmptyListException if the list is empty.
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
      */
@@ -56,14 +56,14 @@ public interface List <E> {
     /**
      * Returns the amount of elements in the list.
      *
-     * @return the amount of elements in the list.
+     * @return The amount of elements in the list.
      */
     int size();
 
     /**
      * Checks whether the list is empty or not.
      *
-     * @return true if the list is empty.
+     * @return True if the list is empty.
      */
     default boolean isEmpty() { return size() == 0; }
 }
