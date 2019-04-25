@@ -1,10 +1,11 @@
 package com.dsa.datastructures;
 
 import com.dsa.datastructures.exceptions.EmptyListException;
+import java.util.NoSuchElementException;
 
 /**
- * <p>A data structure of dynamic size. Data is stored sequentially. Accessing elements has a complexity of O(1) and
- * inserting elements has a complexity of O(n).</p>
+ * A data structure of dynamic size. Data is stored sequentially. Accessing elements has a complexity of O(1) and
+ * inserting elements has a complexity of O(n).
  *
  * @param <E> The type of elements to store.
  * @author Andreas Palmqvist
@@ -40,14 +41,14 @@ public class DynamicArray<E> implements List<E> {
     }
 
     /* Throws IndexOutOfBoundsException if index is not in range [0, size). Makes it possible to securely read from or
-     * write to any node in this linked list.
+     * write to any node in this list.
      */
     private void checkIfInsideBounds(int index) {
         if (index < 0 || index >= size) { throw new IndexOutOfBoundsException(); }
     }
 
-    /* Throws IndexOutOfBoundsException if index is not in range [0, size]. Makes it possible to securely put a node in
-     * front of any node or after any node.
+    /* Throws IndexOutOfBoundsException if index is not in range [0, size]. Makes it possible to securely insert an
+     * element in front of- or after another element.
      */
     private void checkIfInsideBoundsInsert(int index) {
         if (index < 0 || index > size) { throw new IndexOutOfBoundsException(); }
@@ -86,10 +87,9 @@ public class DynamicArray<E> implements List<E> {
         if (size + 1 >= capacity) { expand(); }
 
         // Make place for the new element by pushing every other element up one index.
-        for (int i = index; i < size; i++) {
+        for (int i = size() - 1; i >= index; i--) {
             array[i + 1] = array[i];
         }
-
         array[index] = element;
         size++;
     }
@@ -180,8 +180,58 @@ public class DynamicArray<E> implements List<E> {
     /**
      * Returns the amount of elements in the list.
      *
-     * @return the amount of elements in the list.
+     * @return The amount of elements in the list.
      */
     @Override
     public int size() { return size; }
+
+    /**
+     * Returns an iterator to this list.
+     *
+     * @return An iterator to this list.
+     * @see ListIterator
+     */
+    @Override
+    public ListIterator<E> getIterator() {
+        return new ListIterator<E>() {
+            private int currentIndex = -1;
+            private int nextIndex = 0;
+
+            @Override
+            public E next() {
+                if (!hasNext()) { throw new NoSuchElementException(); }
+
+                currentIndex = nextIndex;
+                nextIndex++;
+
+                return (E) array[currentIndex];
+            }
+
+            @Override
+            public boolean hasNext() { return nextIndex < size(); }
+
+            @Override
+            public void insert(E element) {
+                DynamicArray.this.insert(element, nextIndex);
+                currentIndex = -1;
+                nextIndex++;
+            }
+
+            @Override
+            public void remove() {
+                if (currentIndex == -1) { throw new IllegalStateException(); }
+
+                DynamicArray.this.remove(currentIndex);
+                nextIndex = currentIndex;
+                currentIndex = -1;
+            }
+
+            @Override
+            public void set(E element) {
+                if (currentIndex == -1) { throw new IllegalStateException(); }
+
+                array[currentIndex] = element;
+            }
+        };
+    }
 }
