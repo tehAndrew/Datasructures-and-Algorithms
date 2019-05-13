@@ -110,8 +110,11 @@ public class BoundedQueue<E> implements AbstractQueue<E> {
         return (E) queue[frontIndex];
     }
 
+    /**
+     * Returns the amount of elements in the queue.
+     *
+     * @return The amount of elements in the queue.
+     */
     @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
+    public int size() { return size; }
 }

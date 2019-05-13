@@ -7,7 +7,7 @@ package com.dsa.datastructures.adt;
  * @author Andreas Palmqvist
  * @param <E> The type of elements to store in the stack.
  */
-public interface AbstractStack<E> {
+public interface AbstractStack<E> extends Collection {
     /**
      * Inserts an element at the top of the stack.
      *
@@ -30,6 +30,4 @@ public interface AbstractStack<E> {
      * @return the element at the top of this stack.
      */
     E top();
-
-    boolean isEmpty();
 }

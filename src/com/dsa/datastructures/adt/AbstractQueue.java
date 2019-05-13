@@ -7,7 +7,7 @@ package com.dsa.datastructures.adt;
  * @author Andreas Palmqvist
  * @param <E> The type of elements to store in the queue.
  */
-public interface AbstractQueue<E> {
+public interface AbstractQueue<E> extends Collection {
     /**
      * Inserts an element at the end of the queue.
      *
@@ -31,6 +31,4 @@ public interface AbstractQueue<E> {
      * @return the element in the front of this queue.
      */
     E front();
-
-    boolean isEmpty();
 }

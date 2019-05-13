@@ -81,8 +81,11 @@ public class Queue<E> implements AbstractQueue<E> {
     @Override
     public E front() { return queue.front(); }
 
+    /**
+     * Returns the amount of elements in the queue.
+     *
+     * @return The amount of elements in the queue.
+     */
     @Override
-    public boolean isEmpty() {
-        return queue.isEmpty();
-    }
+    public int size() { return queue.size(); }
 }

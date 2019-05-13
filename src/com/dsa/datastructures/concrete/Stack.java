@@ -61,9 +61,12 @@ public class Stack<E> implements AbstractStack<E> {
         return stack.get(stack.size() - 1);
     }
 
-
-    public boolean isEmpty() {
-        return stack.size() == 0;
-    }
+    /**
+     * Returns the amount of elements in the stack.
+     *
+     * @return The amount of elements in the stack.
+     */
+    @Override
+    public int size() { return stack.size(); }
 
 }

@@ -7,7 +7,7 @@ package com.dsa.datastructures.adt;
  * @author Andreas Palmqvist
  * @param <E> The type of elements to store in the list.
  */
-public interface AbstractList<E> extends IterableList<E> {
+public interface AbstractList<E> extends IterableList<E>, Collection {
     /**
      * Inserts an element at <tt>index</tt>.
      *
@@ -52,18 +52,4 @@ public interface AbstractList<E> extends IterableList<E> {
      * @throws com.dsa.datastructures.exceptions.EmptyListException if the list is already empty.
      */
     void empty();
-
-    /**
-     * Returns the amount of elements in the list.
-     *
-     * @return The amount of elements in the list.
-     */
-    int size();
-
-    /**
-     * Checks whether the list is empty or not.
-     *
-     * @return True if the list is empty.
-     */
-    default boolean isEmpty() { return size() == 0; }
 }
