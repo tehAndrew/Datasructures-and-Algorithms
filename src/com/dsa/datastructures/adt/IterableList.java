@@ -1,4 +1,4 @@
-package com.dsa.datastructures;
+package com.dsa.datastructures.adt;
 
 /**
  * An interface representing a list that can be iterated through.

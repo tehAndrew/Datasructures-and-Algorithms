@@ -1,4 +1,4 @@
-package com.dsa.datastructures;
+package com.dsa.datastructures.adt;
 
 /**
  * An interface representing a sequential collection of elements. Duplicate elements are allowed. Null is a valid
@@ -7,7 +7,7 @@ package com.dsa.datastructures;
  * @author Andreas Palmqvist
  * @param <E> The type of elements to store in the list.
  */
-public interface List <E> extends IterableList<E> {
+public interface AbstractList<E> extends IterableList<E> {
     /**
      * Inserts an element at <tt>index</tt>.
      *

@@ -1,17 +1,19 @@
-package com.dsa.datastructures;
+package com.dsa.datastructures.concrete;
 
+import com.dsa.datastructures.adt.AbstractList;
+import com.dsa.datastructures.adt.ListIterator;
 import com.dsa.datastructures.exceptions.EmptyListException;
 import java.util.NoSuchElementException;
 
 
 /**
- * A doubly linked list. The list is navigable in two directions. Generally the complexity of accessing an element is
- * O(n). Inserting an element into the list is done in O(1) however. To insert elements in O(1), use the iterator.
+ * A doubly linked list. The list is navigable in two directions. The complexity of accessing an element is O(n).
+ * Inserting an element into the list is done in O(1) however. To insert elements in O(1), use the iterator.
  *
  * @param <E> The type of elements to store.
  * @author Andreas Palmqvist
  */
-public class LinkedList<E> implements List<E> {
+public class LinkedList<E> implements AbstractList<E> {
     /* A node is a container for an element. A linked list node points to the next- and previous nodes. In this way
      * multiple nodes makes the linked list.
      */
@@ -105,12 +107,10 @@ public class LinkedList<E> implements List<E> {
         }
     }
 
-    /**
-     * Inserts an <tt>element</tt> to the front of this list. The operation is done in O(1).
-     *
-     * @param element the element to insert.
+    /*
+     * Inserts an element to the front of this list.
      */
-    public void insertFront(E element) {
+    private void insertFront(E element) {
         Node prevHead = head;
         head = new Node(element, null, prevHead);
 
@@ -119,12 +119,10 @@ public class LinkedList<E> implements List<E> {
         size++;
     }
 
-    /**
-     * Inserts <tt>element</tt> to the end of this list. The operation is done in O(1).
-     *
-     * @param element the element to insert.
+    /*
+     * Inserts element to the end of this list.
      */
-    public void insertLast(E element) {
+    private void insertLast(E element) {
         Node prevTail = tail;
         tail = new Node(element, prevTail, null);
 
@@ -133,10 +131,10 @@ public class LinkedList<E> implements List<E> {
         size++;
     }
 
-    /**
-     * Removes the first element of this list. The operation is done in O(1).
+    /*
+     * Removes the first element of this list.
      */
-    public void removeFront() {
+    private void removeFront() {
         if (isEmpty()) { throw new EmptyListException(); }
 
         Node newHead = head.next;
@@ -149,10 +147,10 @@ public class LinkedList<E> implements List<E> {
         size--;
     }
 
-    /**
-     * Removes the last element of this list. The operation is done in O(1).
+    /*
+     * Removes the last element of this list.
      */
-    public void removeLast() {
+    private void removeLast() {
         if (isEmpty()) { throw new EmptyListException(); }
 
         Node newTail = tail.prev;
@@ -166,15 +164,23 @@ public class LinkedList<E> implements List<E> {
     }
 
     /**
-     * Inserts an element at <tt>index</tt>. Inserting is generally done in O(n). The index have to be in range
-     * [0, size]. Size in this range represents the first empty spot at the end of the list, inserting here is done in
-     * O(1). Inserting at index 0 is also done in O(1).
+     * Constructs an empty linked list.
+     */
+    public LinkedList() {
+        size = 0;
+        head = null;
+        tail = null;
+    }
+
+    /**
+     * Inserts an element at <tt>index</tt>. Inserting is done in O(n). The index have to be in range [0, size].
+     * Inserting at the beginning or at the end if the list (at index size) is done in O(1).
      *
-     * <p>Trying to use <tt>insert</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>insert</tt> outside of the range [0, size] will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param element The new element to insert to the list.
      * @param index The index where to insert <tt>element</tt>.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds and not at end of the dynamic array.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size].
      */
     @Override
     public void insert(E element, int index) {
@@ -190,12 +196,12 @@ public class LinkedList<E> implements List<E> {
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>set</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>set</tt> outside of the range [0, size) will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param element The new element to place at <tt>index</tt>.
      * @param index The place in the list to change element.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size).
      */
     @Override
     public void set(E element, int index) {
@@ -210,12 +216,12 @@ public class LinkedList<E> implements List<E> {
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>get</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>get</tt> outside of the range [0, size) will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param index The index of the element to return.
      * @return the element at <tt>index</tt>.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size).
      */
     @Override
     public E get(int index) {
@@ -226,17 +232,16 @@ public class LinkedList<E> implements List<E> {
     }
 
     /**
-     * Removes the element att <tt>index</tt>. This is generally done in O(n). The index have to be in range [0, size].
-     * Size in this range represents the first empty spot at the end of the list, removing at this index is done in
-     * O(1). Removing at index 0 is also done in O(1).
+     * Removes the element att <tt>index</tt>. Removing is done in O(n). The index have to be in range [0, size).
+     * Inserting at the beginning or at the end if the list (at index size - 1) is done in O(1).
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>remove</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>remove</tt> outside of the range [0, size) will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param index The index of the element to remove.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is out of range [0, size).
      */
     @Override
     public void remove(int index) {
@@ -258,7 +263,7 @@ public class LinkedList<E> implements List<E> {
         if (isEmpty()) { throw new EmptyListException(); }
 
         while (!isEmpty()) {
-            removeFront();
+            removeNode(getNode(0));
         }
     }
 

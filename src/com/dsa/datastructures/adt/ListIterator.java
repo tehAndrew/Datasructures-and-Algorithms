@@ -1,4 +1,6 @@
-package com.dsa.datastructures;
+package com.dsa.datastructures.adt;
+
+import com.dsa.datastructures.adt.IterableList;
 
 /**
  * An interface representing an iterator that can be used to iterate through an iterable list.

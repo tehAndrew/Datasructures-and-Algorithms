@@ -1,16 +1,18 @@
-package com.dsa.datastructures;
+package com.dsa.datastructures.concrete;
 
+import com.dsa.datastructures.adt.AbstractList;
+import com.dsa.datastructures.adt.ListIterator;
 import com.dsa.datastructures.exceptions.EmptyListException;
 import java.util.NoSuchElementException;
 
 /**
- * A data structure of dynamic size. Data is stored sequentially. Accessing elements has a complexity of O(1) and
- * inserting elements has a complexity of O(n).
+ * A data structure representing an array of dynamic size. Data is stored sequentially. Accessing elements has a
+ * complexity of O(1) and inserting elements has an amortized complexity of O(n).
  *
  * @param <E> The type of elements to store.
  * @author Andreas Palmqvist
  */
-public class DynamicArray<E> implements List<E> {
+public class DynamicArray<E> implements AbstractList<E> {
     /* This is the capacity of this dynamic array at the start.
      */
     private static final int STANDARD_CAP = 16;
@@ -41,7 +43,7 @@ public class DynamicArray<E> implements List<E> {
     }
 
     /* Throws IndexOutOfBoundsException if index is not in range [0, size). Makes it possible to securely read from or
-     * write to any node in this list.
+     * write to any element in this list.
      */
     private void checkIfInsideBounds(int index) {
         if (index < 0 || index >= size) { throw new IndexOutOfBoundsException(); }
@@ -54,32 +56,25 @@ public class DynamicArray<E> implements List<E> {
         if (index < 0 || index > size) { throw new IndexOutOfBoundsException(); }
     }
 
-    /* Constructs a dynamic array with a specified capacity.
+    /**
+     * Constructs an empty dynamic array.
      */
-    private DynamicArray(int startCap) {
-        capacity = startCap;
+    public DynamicArray() {
+        capacity = STANDARD_CAP;
         size     = 0;
         array    = new Object[capacity];
     }
 
     /**
-     * Constructs an empty dynamic array.
-     */
-    public DynamicArray() {
-        this(STANDARD_CAP);
-    }
-
-    /**
-     * Inserts an element at <tt>index</tt>. Inserting is generally done in O(n), when the array needs to expand
-     * however the full operation is done in O(n). The index have to be in range [0, size]. Size in this range
-     * represents the first empty spot at the end of the list, inserting here is done in O(1) if the list does not have
-     * to expand.
+     * Inserts an element at <tt>index</tt>. Inserting has an amortized complexity O(n). The index have to be in range
+     * [0, size]. Size in this range represents the first empty spot at the end of the list, inserting here has an
+     * has an amortized complexity of O(1);
      *
-     * <p>Trying to use <tt>insert</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>insert</tt> outside of the range [0, size] will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param element The new element to insert to the list.
      * @param index The index where to insert <tt>element</tt>.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds and not at end of the dynamic array.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size].
      */
     @Override
     public void insert(E element, int index) {
@@ -100,12 +95,12 @@ public class DynamicArray<E> implements List<E> {
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>set</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>set</tt> outside of the range [0, size) will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param element The new element to place at <tt>index</tt>.
      * @param index The place in the list to change element.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size).
      */
     @Override
     public void set(E element, int index) {
@@ -120,12 +115,12 @@ public class DynamicArray<E> implements List<E> {
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>get</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>get</tt> outside of the range [0, size) will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param index The index of the element to return.
      * @return the element at <tt>index</tt>.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size).
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -137,16 +132,16 @@ public class DynamicArray<E> implements List<E> {
     }
 
     /**
-     * Removes the element att <tt>index</tt>. This is generally done in O(n). The index have to be in range [0, size].
-     * Removing element (size - 1) is done in O(1).
+     * Removes the element att <tt>index</tt>. This is has an amortized complexity O(n). The index have to be in range
+     * [0, size]. Removing element (size - 1) has an amortised complexity O(1).
      *
      * <p>Trying to call this operation on an empty list will throw <tt>EmptyListException</tt>
      *
-     * <p>Trying to use <tt>remove</tt> outside of the range will throw <tt>IndexOutOfBoundsException</tt>.
+     * <p>Trying to use <tt>remove</tt> outside of the range [0, size] will throw <tt>IndexOutOfBoundsException</tt>.
      *
      * @param index The index of the element to remove.
      * @throws EmptyListException if this list is empty.
-     * @throws IndexOutOfBoundsException if the specified index is out of bounds.
+     * @throws IndexOutOfBoundsException if the specified index is not in range [0, size].
      */
     @Override
     public void remove(int index) {
